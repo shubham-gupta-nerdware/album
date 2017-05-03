@@ -5,7 +5,7 @@ const bodyParser     = require('body-parser');
 const path = require('path');
 
 
-// config files by manish
+// config files by Ashu
 var db = require('./config/db');
 var port = process.env.PORT || 3000; // set our port
 
