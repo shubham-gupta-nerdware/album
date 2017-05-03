@@ -29,5 +29,5 @@ app.get('/', function (req, res) {
 
 // start app ===============================================
 app.listen(port);	
-console.log('Magic happens on port ' + port); 
+console.log('Magic happens on port, which is' + port); 
 exports = module.exports = app; 			
