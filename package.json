@@ -1,0 +1,26 @@
+{
+  "name": "photoalbum",
+  "version": "1.0.0",
+  "description": "Create a album layout of uploaded photos, and can drag & drop photos & text to make a desired layout",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xelpmocShubham/photoAlbum.git"
+  },
+  "keywords": [
+    "story",
+    "photo",
+    "album",
+    "moments"
+  ],
+  "author": "Shubham Gupta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xelpmocShubham/photoAlbum/issues"
+  },
+  "homepage": "https://github.com/xelpmocShubham/photoAlbum#readme"
+}
