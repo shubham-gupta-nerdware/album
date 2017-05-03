@@ -22,5 +22,12 @@
   "bugs": {
     "url": "https://github.com/xelpmocShubham/photoAlbum/issues"
   },
-  "homepage": "https://github.com/xelpmocShubham/photoAlbum#readme"
+  "homepage": "https://github.com/xelpmocShubham/photoAlbum#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "mongoose": "^4.9.7",
+    "nodemon": "^1.11.0",
+    "path": "^0.12.7"
+  }
 }
