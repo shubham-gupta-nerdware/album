@@ -5,7 +5,7 @@ var path = require('path');
 
 var storyControllerObj = require('../controllers/storyController.js');
 
-router.get('/allstories/:st/:lt', storyControllerObj.getStoryData);//version
+router.get('/allstories/:lt/:st', storyControllerObj.getStoryData);//version
 router.get('/storyDetails/:sid', storyControllerObj.getStoryDetails);//version
 
 
