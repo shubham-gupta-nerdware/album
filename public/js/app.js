@@ -11,10 +11,12 @@ album.controller('albumController', function ($scope, $http, $timeout, $location
   
     
     $scope.storyDet = [];
-    
+    console.log(NODOMAIN + 'storyDetails/' + $scope.paramStoryId);
 
-    $http.get(NODOMAIN + 'storyDetails/' + $scope.param['storyid'])
+    $http.get(NODOMAIN + 'storyDetails/' + $scope.paramStoryId)
     .success(function (response) {
+        console.log(response);
+        
         try
         {
             $scope.error = response.error;
@@ -22,7 +24,7 @@ album.controller('albumController', function ($scope, $http, $timeout, $location
             console.log('Error');
             console.log(err);
         }
-
+        
         if ($scope.error.errorCode == 0)
         {
             $scope.storyDet = response.results[0];
