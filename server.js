@@ -27,6 +27,22 @@ app.use(express.static(__dirname + '/public')); // set the static files location
 //    next();
 //});
 
+var MongoClient = require('mongodb').MongoClient;
+
+// Connect to the db
+var url ="mongodb://localhost:27017/db_homehapp_mongo";
+
+
+MongoClient.connect(url, { promiseLibrary: Promise }, (err, db) => {
+  if (err) {
+    logger.warn(`Failed to connect to the database. ${err.stack}`);
+  }
+  app.locals.db = db;
+  // app.listen(config.port, () => {
+  //   logger.info(`Node.js app is listening at http://localhost:${config.port}`);
+  // });
+});
+
 
 app.get('/story/:sid', function (req, res) {
     res.sendFile(path.resolve('./public/views/index.html'));
