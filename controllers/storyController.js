@@ -88,9 +88,10 @@ var addStory = function (req, res, next) {
 };
 
 var getStoryData = function(req, res, next ){
+  const db = req.app.locals.db;
    var st = parseInt(req.params.st);
    var lt = parseInt(req.params.lt);
-    MongoClient.connect(url, function(err, db) {
+   // MongoClient.connect(url, function(err, db) {
         db.collection('story_details', function(err, collection) {
             if (err)
                 return console.log('error opening users collection, err = ', err);
@@ -102,7 +103,7 @@ var getStoryData = function(req, res, next ){
                 }
             });
         });
-    });
+   //});
 };
 
 
@@ -111,9 +112,9 @@ var getStoryDetails = function(req, res, next ){
    
  
     var sid = req.params.storyId;
-    
-    MongoClient.connect(url, function(err, db) {
-      
+    console.log( "here"+req.app.locals.db);
+   // MongoClient.connect(url, function(err, db) {
+      const db = req.app.locals.db;
         var collectionstory = db.collection('story_details');
         var creatorDetais=   collectionstory.find({story_id:parseInt(sid)});
         var i=0;
@@ -133,7 +134,7 @@ var getStoryDetails = function(req, res, next ){
              db.close();
             }
         });
-    });
+    //});
 };
 
 
