@@ -1,13 +1,17 @@
 var album = angular.module('album', []);
-album.controller('albumController', function ($scope, $http, $timeout, $location, $timeout) {
+album.constant("$config", {
+    "page": "index.html",
+    "for": "story"
+});
+
+album.controller('albumController', function ($scope, $http, $timeout, $location, $timeout,$config) {
+    var params = $location.absUrl().split('/');
+    $scope.paramStoryId=params[params.length-1];
+    console.log($scope.paramStoryId);
+  
+    
     $scope.storyDet = [];
-    var params = $location.absUrl().split('?');
-    var params = params[1].split('&');
-    $scope.param = {};
-    angular.forEach(params, function (value, key) {
-        var p = value.split('=');
-        $scope.param[p[0]] = p[1];
-    });
+    
 
     $http.get(NODOMAIN + 'storyDetails/' + $scope.param['storyid'])
     .success(function (response) {

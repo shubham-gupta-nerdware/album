@@ -18,9 +18,19 @@ app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-f
 
 app.use(express.static(__dirname + '/public')); // set the static files location /public/img will be /img for users
 
+//app.all('/*',function(req,res,next){
+//    var url = req.headers.host +req.url;
+//    global.serverConfig={};
+//    serverConfig.url=url;
+//    serverConfig.domain=req.headers.host;
+//    console.log(serverConfig);
+//    next();
+//});
 
-app.get('/', function (req, res) {
-  res.sendFile(path.resolve('./public/views/index.html'));
+
+app.get('/story/:sid', function (req, res) {
+    res.sendFile(path.resolve('./public/views/index.html'));
+    
 });
 
 
@@ -33,4 +43,4 @@ app.use('/',require('./routes/index.js'));
 // start app ===============================================
 app.listen(port);
 console.log('Magic happens on port, which is ' + port); 
-exports = module.exports = app;
+//exports = module.exports = app;

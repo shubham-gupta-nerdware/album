@@ -108,20 +108,29 @@ var getStoryData = function(req, res, next ){
 
 
 var getStoryDetails = function(req, res, next ){
-    console.log(req)
-    var sid = req.params.sid;
+   
+ 
+    var sid = req.params.storyId;
+    
     MongoClient.connect(url, function(err, db) {
+      
         var collectionstory = db.collection('story_details');
-        var creatorDetais=   collectionstory.find({sId:parseInt(sid)});
+        var creatorDetais=   collectionstory.find({story_id:parseInt(sid)});
         var i=0;
         creatorDetais.each(function(err,documents){
+           
             if (err)
                 return console.log('error opening users collection, err = ', err);
             else{
-                if(documents)
+                if(documents){
                     res.json(documents);
+                    return 1;
+                }
                 else
-                    res.json({results:'No results found'});
+                 //   res.json({results:'No results found'});
+               
+            
+             db.close();
             }
         });
     });
