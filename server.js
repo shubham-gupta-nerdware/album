@@ -35,7 +35,8 @@ var url ="mongodb://localhost:27017/db_homehapp_mongo";
 
 MongoClient.connect(url, { promiseLibrary: Promise }, (err, db) => {
   if (err) {
-    logger.warn(`Failed to connect to the database. ${err.stack}`);
+      console.log('error while conecction');
+  //  logger.warn(`Failed to connect to the database. ${err.stack}`);
   }
   app.locals.db = db;
   // app.listen(config.port, () => {

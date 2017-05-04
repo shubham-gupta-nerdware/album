@@ -13,6 +13,7 @@ var storyLoaded= false;
 var myEvent = window.attachEvent || window.addEventListener;
 var chkevent = window.attachEvent ? 'onbeforeunload' : 'beforeunload';
 var isMobile = true;
+var notDoneIds=[];
 
 
 function deactivateScroll() {
@@ -124,7 +125,7 @@ function readAllFunction(){
         isMobile= true;
     }
 
-    $('.actionWrapper').niceScroll({cursorcolor: "#000000", touchbehavior: isTouch, cursorwidth: "4px", autohidemode: false, cursorborder: "0px solid #fff", cursoropacitymin: "1", cursoropacitymax: "1", railpadding: {top: 2, right: 2, left: 2, bottom: 2}, horizrailenabled: false});
+    $('.actionWrapper').niceScroll({cursorcolor: "#000000", touchbehavior: true, cursorwidth: "4px", autohidemode: false, cursorborder: "0px solid #fff", cursoropacitymin: "1", cursoropacitymax: "1", railpadding: {top: 2, right: 2, left: 2, bottom: 2}, horizrailenabled: false});
     init();
 
     $(window).scroll(function () {
@@ -147,8 +148,7 @@ $(document).ready(function () {
 function completedPageload(){
     $('#pageLoader').addClass('dn');
     var data;
-    $('#cover').addClass('scala');
-    $('.coverOver').addClass('cloadin');
+    $('#coverPhoto').addClass('scala coverOver');
     $('.neighDataD').addClass('opaCover');
 
     setTimeout(function () {
@@ -1496,9 +1496,6 @@ function addDescription(title_id){
 function removeEmpty(obj){
     $(obj).removeClass('empty');
 }
-
-
-
 
 function refactor(a, b) {
     if (a == 'auto') {

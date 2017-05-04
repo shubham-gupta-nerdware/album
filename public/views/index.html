@@ -14,13 +14,35 @@
         <script type="text/javascript" src="../js/Common.js"></script>
         <script type="text/javascript" src="../js/constant.js"></script>
         <script type="text/javascript" src="../js/app.js"></script>
+        <script type="text/javascript" src="../js/album.js"></script>
         <link rel="stylesheet" type="text/css" href="../css/album.css">
     </head>
     <body ng-app="album" >
         <div class="container  ADDSTORY fLeft"  ng-controller="albumController" ng-cloak id='contHt'>
+            <div class="coverOver">
+                <div id='coverPhoto' class="coverSection fLeft"  data-img="" style="">
+                    <div class="patternDiv"   id='coverPattern'></div>
+                </div>
+                <div class="neighData"  id='coverInfo'>
+                    <div class="neighDataD transition2s">
+                        <div class="show680 mobstoryTitle">{{storyDet.story_heading}}</div>
+                        <div class="show680 mobstoryTxt">{{storyDet.story_heading_description}}</div>
+                        <input type="text" maxlength="30" class="storyTitle fLeft  hide680" placeholder="Enter your story title here" readonly ng-class="storyDet.story_heading ? 'bgTRans' : ''" value="{{storyDet.story_heading}}"  id='storyMtitle'>
+                        <input type="text"  maxlength="70" readonly class="storyTxt fLeft hide680" placeholder="And write your sub title here" ng-class="storyDet.story_heading_description ? 'bgTRans' : ''" readonly style="height: 70px;" value="{{storyDet.story_heading_description}}"/>
+                    </div>
+                </div>
+                <div class="coverDownArrow fstR nScale transition600" onclick="slideDown()"></div>
+            </div>
             <div id="grid" class="editModeOff">
-                <div class="group"  style="height: {{jx.height}}px;" ng-repeat="jx in returnArr" repeat-end="onEnd();">
-                    <div ng-repeat="it in jx.items" class="item photo-item ui-draggable ui-draggable-handle {{it.id}}" data-id="{{it.id}}" data-height="{{it.dh}}" data-width="{{it.dw}}" data-facval="{{it.facval}}" data-factor="{{it.factor}}" data-img="{{it.imagePath}}"  ng-if="(it.type == 'txt' || (it.imagePath && it.dw && it.dh))"></div>
+                <div class="group"  style="height: {{jx.height}}px;" ng-repeat="jx in returnArr" repeat-end="onEndReturnArr();">
+                    <div ng-repeat="it in jx.items" class="item photo-item ui-draggable ui-draggable-handle {{it.id}}" data-id="{{it.id}}" data-height="{{it.dh}}" data-width="{{it.dw}}" data-facval="{{it.facval}}" data-factor="{{it.factor}}" data-img="{{it.imagePath}}"  ng-if="(it.type == 'txt' || (it.imagePath && it.dw && it.dh))">
+                        <div class="neighData" ng-if="it.type == 'txt' && txt.title_id==it.id" ng-repeat="txt in titles" >
+                            <div class="neighDataD forData forInps">
+                                <div maxlength="40" class="storyTitle fLeft " style="" ng-bind-html="txt.title_text | unsafe" ng-class="txt.text_color == '#ffffff' ? 'whitePlaceholder' : ''" style="color: {{txt.text_color}}; text-align:{{ txt.text_align}}"></div>
+                                <div class="storyTxt fLeft editable noPlacHolder " contenteditable="false" ng-bind-html="txt.description | unsafe" ng-class="txt.text_color == '#ffffff' ? 'whitePlaceholder' : ''" style="color: {{txt.text_color}}; text-align:{{ txt.text_align}}"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
