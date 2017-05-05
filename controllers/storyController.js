@@ -105,7 +105,7 @@ var getStoryData = function(req, res, next ){
                 else{
                    result=results;
                    retArr.results = result;
-                    error.errorCode = 1;
+                    error.errorCode = 0;
                     error.errorMsg = "Data fetched Successfully";
                     retArr.error = error;
                     res.json(retArr);
@@ -142,7 +142,7 @@ var getStoryDetails = function(req, res, next ){
                 if(documents){
                     result=documents;
                     retArr.results = result;
-                    error.errorCode = 1;
+                    error.errorCode = 0;
                     error.errorMsg = "Data fetched Successfully";
                     retArr.error = error;
                     res.json(retArr);
