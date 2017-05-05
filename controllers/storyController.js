@@ -89,6 +89,10 @@ var addStory = function (req, res, next) {
 
 var getStoryData = function(req, res, next ){
   var db = req.app.locals.db;
+        var result = {};
+        var retArr = {};
+        var results = [];
+        var error = {};
    var st = parseInt(req.params.st);
    var lt = parseInt(req.params.lt);
    // MongoClient.connect(url, function(err, db) {
@@ -99,7 +103,13 @@ var getStoryData = function(req, res, next ){
                 if (err)
                     return console.log('error initiating find on users, err = ', err);
                 else{
-                    res.json(results);
+                   result=results;
+                   retArr.results = result;
+                    error.errorCode = 1;
+                    error.errorMsg = "Data fetched Successfully";
+                    retArr.error = error;
+                    res.json(retArr);
+                    return 1;
                 }
             });
           
@@ -113,9 +123,14 @@ var getStoryDetails = function(req, res, next ){
    
  
     var sid = req.params.storyId;
-    console.log( "here"+req.app.locals.db);
+    
    // MongoClient.connect(url, function(err, db) {
       var db = req.app.locals.db;
+      var result = {};
+        var retArr = {};
+        var results = [];
+        var error = {};
+
         var collectionstory = db.collection('story_details');
         var creatorDetais=   collectionstory.find({story_id:parseInt(sid)});
         var i=0;
@@ -125,7 +140,12 @@ var getStoryDetails = function(req, res, next ){
                 return console.log('error opening users collection, err = ', err);
             else{
                 if(documents){
-                    res.json(documents);
+                    result=documents;
+                    retArr.results = result;
+                    error.errorCode = 1;
+                    error.errorMsg = "Data fetched Successfully";
+                    retArr.error = error;
+                    res.json(retArr);
                     return 1;
                 }
                
