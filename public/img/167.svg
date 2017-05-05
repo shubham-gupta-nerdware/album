@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="44px" height="44px" viewBox="0 0 44 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch -->
+    <title>vid-camera-old</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="44px-Glyph" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="vid-camera-old" fill="rgba(255,255,255,0.7)">
+            <path d="M30,44 L6,44 C3.794,44 2,42.206 2,40 L2,26 C2,23.794 3.794,22 6,22 L30,22 C32.206,22 34,23.794 34,26 L34,40 C34,42.206 32.206,44 30,44" id="Fill-121"></path>
+            <path d="M43.4932,24.1299 C43.1792,23.9519 42.7952,23.9569 42.4852,24.1429 L36.0002,28.0339 L36.0002,37.9659 L42.4852,41.8579 C42.6432,41.9519 42.8222,41.9999 43.0002,41.9999 C43.1702,41.9999 43.3402,41.9569 43.4932,41.8699 C43.8062,41.6919 44.0002,41.3599 44.0002,40.9999 L44.0002,24.9999 C44.0002,24.6399 43.8062,24.3079 43.4932,24.1299" id="Fill-122"></path>
+            <path d="M7,20 C3.141,20 0,16.859 0,13 C0,9.141 3.141,6 7,6 C10.859,6 14,9.141 14,13 C14,16.859 10.859,20 7,20" id="Fill-123"></path>
+            <path d="M26,20 C20.486,20 16,15.514 16,10 C16,4.486 20.486,0 26,0 C31.514,0 36,4.486 36,10 C36,15.514 31.514,20 26,20" id="Fill-124"></path>
+        </g>
+    </g>
+</svg>
