@@ -4,7 +4,7 @@ album.constant("$config", {
     "for": "story"
 });
 
-album.controller('albumController', function ($scope, $http, $timeout, $location, $timeout,$config) {
+album.controller('albumController', function ($scope, $http, $timeout, $location, $timeout,$config,$window) {
     var params = $location.absUrl().split('/');
     $scope.paramStoryId=storyid=params[params.length-1];
     $scope.storyDet = [];
@@ -12,19 +12,16 @@ album.controller('albumController', function ($scope, $http, $timeout, $location
 
     $http.get(NODOMAIN + 'storyDetails/' + $scope.paramStoryId)
     .success(function (response) {
-        //console.log(response);
+        try
+        {
+            $scope.error = response.error;
+        } catch (err) {
+            console.log('Error');
+            console.log(err);
+        }
         
-//        try
-//        {
-//            $scope.error = response.error;
-//        } catch (err) {
-//            console.log('Error');
-//            console.log(err);
-//        }
-//        
-//        if ($scope.error.errorCode == 0)
-//        {
-            response.results = response;
+        if ($scope.error.errorCode == 0)
+        {
             $scope.storyDet = response.results;
             
             
@@ -65,7 +62,6 @@ album.controller('albumController', function ($scope, $http, $timeout, $location
                         
             if ($scope.storyDet.story_json){
                 $scope.returnArr = JSON.parse($scope.storyDet.story_json);
-                
                 
                 $scope.onEndReturnArr = function(){
                     $timeout(function () {
@@ -148,22 +144,14 @@ album.controller('albumController', function ($scope, $http, $timeout, $location
                         $scope.seqloadImg(0);
                     },100);
                 };
-                
-               
-                
             }
-            
-            
-            
-            
-            return;
-       // }
-
+        }
+        else{
+            common.msg(0,'No records found');
+        }
     });
     
-    
-    
-$scope.reArrange =function(){
+    $scope.reArrange =function(){
     $('.group').each(function () {
         var itemDet = [];
         var itemDetTemp = [];
@@ -327,38 +315,55 @@ $scope.reArrange =function(){
     
 };
     
-$scope.seqloadImg = function(jdx) {
-    var group_length = $('.group').length;
-    if (jdx < group_length) {
-        if ($('.group').eq(jdx).find('.forImg').length != 0) {
-            $('.group').eq(jdx).find('.forImg').each(function () {
-                var th = $(this);
-                acImage = $(this).attr('data-img');
-                if (acImage && !$(th).hasClass('iloaded')) {
-                    if ($(this).outerWidth(true) <= 320)
-                        acImage = (acImage ? acImage.replace('/upload/', '/upload/w_320,dpr_1.5,q_auto:low/') : '');
-                    else if ($(this).outerWidth(true) <= 480)
-                        acImage = (acImage ? acImage.replace('/upload/', '/upload/w_480,dpr_1.5,q_auto:low/') : '');
-                    else if ($(this).outerWidth(true) <= 720)
-                        acImage = (acImage ? acImage.replace('/upload/', '/upload/w_720,dpr_1.5,q_auto:low/') : '');
-                    else if ($(this).outerWidth(true) <= 1080)
-                        acImage = (acImage ? acImage.replace('/upload/', '/upload/w_1080,dpr_1.5,q_auto:low/') : '');
-                    else
-                        acImage = (acImage ? acImage.replace('/upload/', '/upload/w_1080,dpr_1.5,q_auto:low/') : '');
-                    $(th).attr('act-image', acImage);
-                    var str = '<div class="dummyImg transition300 nfadeIn" style="background-image: url(' + acImage + ') ; background-repeat: no-repeat ; background-position : center ; background-size: cover">';
-                    if (!$(th).hasClass('iloaded')) {
-                        $(th).addClass('iloaded');
-                        $(th).empty().append(str);
+    $scope.seqloadImg = function(jdx) {
+        var group_length = $('.group').length;
+        if (jdx < group_length) {
+            if ($('.group').eq(jdx).find('.forImg').length != 0) {
+                $('.group').eq(jdx).find('.forImg').each(function (i,vl) {
+                    var th = $(this);
+                    acImage = $(this).attr('data-img');
+                    if (acImage && !$(th).hasClass('iloaded')) {
+                        if ($(this).outerWidth(true) <= 320)
+                            acImage = (acImage ? acImage.replace('/upload/', '/upload/w_320,dpr_1.5,q_auto:low/') : '');
+                        else if ($(this).outerWidth(true) <= 480)
+                            acImage = (acImage ? acImage.replace('/upload/', '/upload/w_480,dpr_1.5,q_auto:low/') : '');
+                        else if ($(this).outerWidth(true) <= 720)
+                            acImage = (acImage ? acImage.replace('/upload/', '/upload/w_720,dpr_1.5,q_auto:low/') : '');
+                        else if ($(this).outerWidth(true) <= 1080)
+                            acImage = (acImage ? acImage.replace('/upload/', '/upload/w_1080,dpr_1.5,q_auto:low/') : '');
+                        else
+                            acImage = (acImage ? acImage.replace('/upload/', '/upload/w_1080,dpr_1.5,q_auto:low/') : '');
+
+                        $(th).attr('act-image', acImage);
+                        var str = '<div class="dummyImg transition300 nfadeIn1" style="background-image: url(' + acImage + ') ; background-repeat: no-repeat ; background-position : center ; background-size: cover">';
+                        if (!$(th).hasClass('iloaded')) {
+                            $(th).addClass('iloaded');
+                            $(th).empty().append(str);
+                            $scope.seqloadImg(jdx + 1);
+                        }
                     }
-                }
-            });
-        } 
-        else {
-            seqloadImg(jdx + 1);
+                });
+            } 
+            else {
+                $scope.seqloadImg(jdx + 1);
+            }
         }
-    }
-}
+    };
+    
+    
+    
+    $($window).on('scroll',function(){
+        console.log('here')
+        
+        
+    });
+    
+    
+    
+    
+    
+    
+    
     
     
     
