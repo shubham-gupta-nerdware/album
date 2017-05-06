@@ -333,7 +333,7 @@ album.controller('albumController', function ($scope, $http, $timeout, $location
                             acImage = (acImage ? acImage.replace('/upload/', '/upload/w_1080,dpr_1.5,q_auto:low/') : '');
 
                         $(th).attr('act-image', acImage);
-                        var str = '<div class="dummyImg transition300 nfadeIn1" style="background-image: url(' + acImage + ') ; background-repeat: no-repeat ; background-position : center ; background-size: cover">';
+                        var str = '<div class="dummyImg cardTr" style="background-image: url(' + acImage + ') ; background-repeat: no-repeat ; background-position : center ; background-size: cover;opacity:0">';
                         if (!$(th).hasClass('iloaded')) {
                             $(th).addClass('iloaded');
                             $(th).empty().append(str);
@@ -380,6 +380,16 @@ album.controller('albumController', function ($scope, $http, $timeout, $location
                         }
                     }
                 }
+            });
+            
+            
+            
+            $('#grid').find('.forImg').each(function (i, v) {
+                var _this = this;
+                if ((parseInt($(this).offset().top) <= (sc + wHeight)) && (parseInt($(this).offset().top) + $(this).height() >= (sc))) {
+                    $(_this).find('.cardTr').css({'opacity':1});
+                }
+                
             });
         }
     });
