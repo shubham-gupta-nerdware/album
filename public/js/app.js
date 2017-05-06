@@ -8,7 +8,7 @@ album.controller('albumController', function ($scope, $http, $timeout, $location
     var params = $location.absUrl().split('/');
     $scope.paramStoryId=storyid=params[params.length-1];
     $scope.storyDet = [];
-   
+   $scope.isMobile= false;
 
     $http.get(NODOMAIN + 'storyDetails/' + $scope.paramStoryId)
     .success(function (response) {
@@ -23,7 +23,6 @@ album.controller('albumController', function ($scope, $http, $timeout, $location
         if ($scope.error.errorCode == 0)
         {
             $scope.storyDet = response.results;
-            
             
             if($scope.storyDet.story_cover_photo_path){
                 var actualImage = new Image();
@@ -57,8 +56,6 @@ album.controller('albumController', function ($scope, $http, $timeout, $location
                 $('.neighDataD').addClass('opaCover');
                 
             }
-            
-            
                         
             if ($scope.storyDet.story_json){
                 $scope.returnArr = JSON.parse($scope.storyDet.story_json);
@@ -116,7 +113,8 @@ album.controller('albumController', function ($scope, $http, $timeout, $location
                                     srcpth += '<source src="' + pathwoextn + '.webm" type="video/webm"/>';
                                     srcpth += '<source src="' + pathwoextn + '.ogv" type="video/ogg"/>';
 
-                                    $('.' + vl.id).html('<video id="' + vl.id + '" class="video" muted loop playsinline style="width:100%;height:100%">' + srcpth + '</video><div class="videoCont"><div class="muteIcon muted"></div><div class="pauseIcon"></div><div class="mobilePlay"></div></div>');
+                                    //$('.' + vl.id).html('<video id="' + vl.id + '" class="video" video-events muted loop playsinline style="width:100%;height:100%">' + srcpth + '</video><div class="videoCont"><div class="muteIcon muted"></div><div class="pauseIcon"></div><div class="mobilePlay"></div></div>');
+                                    $('#videoTag-' + vl.id).html(srcpth);
                                     $('.' + vl.id).css({
                                         'height': vl.height + 'px',
                                         'width': vl.width + 'px',
@@ -351,21 +349,62 @@ album.controller('albumController', function ($scope, $http, $timeout, $location
     };
     
     
+    if($($window).width()>1024)
+        $scope.isMobile= false;
+    else
+        $scope.isMobile= true;
     
     $($window).on('scroll',function(){
-        console.log('here')
-        
-        
+        if (!$scope.isMobile) {
+            var sc = $($window).scrollTop();
+            var wHeight = $($window).height();
+            $('#grid').find('.forVideo').each(function (i, v) {
+                var _this = this;
+                if ((parseInt($(this).offset().top) <= (sc + wHeight)) && (parseInt($(this).offset().top) + $(this).height() >= (sc))) {
+                    var vid = $(_this).find('.video').attr('id');
+                    if (vid) {
+                        var st = document.getElementById(vid).readyState;
+                        if (st == 4) {
+                            //if (!$(_this).hasClass('paused')) {
+                                $(_this).find('.video').get(0).play();
+                            //}
+                        }
+                    }
+                }
+                else {
+                    var vid = $(_this).find('.video').attr('id');
+                    if (vid){
+                        var st = document.getElementById(vid).readyState;
+                        if (st == 4) {
+                            $(this).find('.video').get(0).pause();
+                        }
+                    }
+                }
+            });
+        }
     });
     
+    $scope.lastVid='';
+    $scope.muteVideo = function(vid,$event){
+        if ($scope.lastVid !== "" && $scope.lastVid !== vid)
+            $('#' + $scope.lastVid).prop({'muted': true});
+
+        var isMuted = $('#' + vid).prop('muted');
+        if (isMuted)
+            $('#' + vid).prop({'muted': false});
+         else 
+            $('#' + vid).prop({'muted': true});
+        $scope.lastVid = vid;
+        
+    };
     
-    
-    
-    
-    
-    
-    
-    
+    $scope.pauseVideo = function(vid,$event){
+        var isPaused=$('#'+vid).parent().hasClass('paused');
+        if (isPaused)
+            $('#'+vid).get(0).play();
+        else 
+            $('#'+vid).get(0).pause();
+    };
     
 });
 
@@ -383,5 +422,26 @@ album.directive("repeatEnd", function () {
 album.filter('unsafe', function($sce) {
     return function(val) {
         return $sce.trustAsHtml(val);
+    };
+});
+
+album.directive('videoEvents', function () {
+    return function ($scope, $element) {
+        $element[0].addEventListener("loadeddata", function (d) {});
+
+        $element[0].addEventListener("playing", function (d) {
+            $($element[0]).parent().removeClass('paused');
+        });
+
+        $element[0].addEventListener("pause", function (d) {
+            $($element[0]).parent().addClass('paused');
+        });
+
+        $element[0].addEventListener("volumechange", function (d) {
+            if ($element[0].muted)
+                $($element[0]).parent().find('.muteIcon').addClass('muted');
+            else
+                $($element[0]).parent().find('.muteIcon').removeClass('muted');
+        });
     };
 });

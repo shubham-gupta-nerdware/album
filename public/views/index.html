@@ -39,6 +39,12 @@
                                 <div class="storyTxt fLeft editable noPlacHolder " contenteditable="false" ng-bind-html="txt.description | unsafe" ng-class="txt.text_color == '#ffffff' ? 'whitePlaceholder' : ''" style="color: {{txt.text_color}}; text-align:{{ txt.text_align}}"></div>
                             </div>
                         </div>
+                        <video id="videoTag-{{it.id}}" class="video" video-events muted loop playsinline style="width:100%;height:100%" ng-if="it.type == 'video'"></video>
+                        <div class="videoCont" ng-if="it.type == 'video'">
+                            <div class="muteIcon muted" ng-click="muteVideo('videoTag-'+it.id,$event)"></div>
+                            <div class="pauseIcon" ng-click="pauseVideo('videoTag-'+it.id,$event)"></div>
+                            <div class="mobilePlay"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -52,5 +58,11 @@
                 <div class="fTxt1 fLeft txtCenter">{{storyDet.writen_by}}</div>
             </div>
         </div>
+        
+        <script>
+            
+        
+        </script>
+        
     </body>
 </html>
