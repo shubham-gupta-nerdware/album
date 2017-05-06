@@ -382,11 +382,16 @@ album.controller('albumController', function ($scope, $http, $timeout, $location
                 }
             });
             
-            
-            
             $('#grid').find('.forImg').each(function (i, v) {
                 var _this = this;
-                if ((parseInt($(this).offset().top) <= (sc + wHeight)) && (parseInt($(this).offset().top) + $(this).height() >= (sc))) {
+                var imgLoaded=$(_this).hasClass('iloaded');
+                if(imgLoaded){
+                    if ((parseInt($(this).offset().top) <= (sc + wHeight)) && (parseInt($(this).offset().top) + $(this).height() >= (sc))) {
+                        $(_this).find('.cardTr').css({'opacity':1});
+                    }
+                }else{
+                    var indx=$(_this).parent().attr('data-index');
+                    $scope.seqloadImg(indx);
                     $(_this).find('.cardTr').css({'opacity':1});
                 }
                 

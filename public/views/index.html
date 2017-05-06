@@ -31,7 +31,7 @@
                 <div class="coverDownArrow fstR nScale transition600" onclick="slideDown()"></div>
             </div>
             <div id="grid" class="editModeOff">
-                <div class="group"  style="height: {{jx.height}}px;" ng-repeat="jx in returnArr" repeat-end="onEndReturnArr();">
+                <div class="group"  style="height: {{jx.height}}px;" ng-repeat="jx in returnArr" repeat-end="onEndReturnArr();"  data-index="{{$index}}">
                     <div ng-repeat="it in jx.items" class="item {{it.id}}" data-id="{{it.id}}" data-height="{{it.dh}}" data-width="{{it.dw}}" data-facval="{{it.facval}}" data-factor="{{it.factor}}" data-img="{{it.imagePath}}"  ng-if="(it.type == 'txt' || (it.imagePath && it.dw && it.dh))">
                         <div class="neighData" ng-if="it.type == 'txt' && txt.title_id==it.id" ng-repeat="txt in titles" >
                             <div class="neighDataD forData forInps">
