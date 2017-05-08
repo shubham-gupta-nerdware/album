@@ -6,7 +6,7 @@ var multer          = require('multer');
                             callback(null, folder);
                         },
                         filename: function (req, file, callback) {
-                            callback(null, randomFilePath);
+                            callback(null, randomFilePath+file.originalname);
                         }
                     });
 
