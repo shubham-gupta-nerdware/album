@@ -47,7 +47,10 @@ MongoClient.connect(url, { promiseLibrary: Promise }, (err, db) => {
 
 app.get('/story/:sid', function (req, res) {
     res.sendFile(path.resolve('./public/views/index.html'));
-    
+});
+
+app.get('/createStory/:sid', function (req, res) {
+    res.sendFile(path.resolve('./public/views/createStory.html'));
 });
 
 
