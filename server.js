@@ -39,6 +39,7 @@ MongoClient.connect(url, { promiseLibrary: Promise }, (err, db) => {
   //  logger.warn(`Failed to connect to the database. ${err.stack}`);
   }
   app.locals.db = db;
+  console.log(db);
   // app.listen(config.port, () => {
   //   logger.info(`Node.js app is listening at http://localhost:${config.port}`);
   // });

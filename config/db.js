@@ -14,10 +14,15 @@
  */
 
 
+
 var MongoClient = require('mongodb').MongoClient;
 
 // Connect to the db
 var url ="mongodb://localhost:27017/db_homehapp_mongo";
+
+
+
+
 //MongoClient.connect("mongodb://localhost:27017/admin", function(err, db) {
 //
 //});
