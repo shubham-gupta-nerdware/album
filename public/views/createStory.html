@@ -20,12 +20,14 @@
     <body ng-app="createAlbum">
         <div class="container  ADDSTORY"  ng-controller="albumController" ng-cloak id='contHt'>
             
-          <!--   <form novalidate enctype="multipart/form-data">
+            <!-- <form novalidate enctype="multipart/form-data">
                 <input type="file" id="coverUpload" file-model="myFile" multiple>
                 <label for="coverUpload"></label>
                 <button ng-click="uploadFile()">SUBMIT</button>
-            </form>
-             -->
+            </form> -->
+
+            
+            
 
             <form id="frmUploader" enctype="multipart/form-data" action="/photosUpload/123456/1" method="post">
                 <input type="file" name="imgUploader" multiple />

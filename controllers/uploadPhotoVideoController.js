@@ -13,6 +13,7 @@ var Storage = multer.diskStorage({
     }
 });
 
+
 var upload = multer({ storage: Storage }).array("imgUploader", 3); //Field name and max count
 
 var photosUpload = function(req, res, next){
