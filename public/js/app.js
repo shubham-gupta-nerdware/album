@@ -6,9 +6,9 @@ album.constant("$config", {
 
 album.controller('albumController', function ($scope, $http, $timeout, $location, $timeout,$config,$window) {
     var params = $location.absUrl().split('/');
-    $scope.paramStoryId=storyid=params[params.length-1];
+    $scope.paramStoryId=params[params.length-1];
     $scope.storyDet = [];
-   $scope.isMobile= false;
+    $scope.isMobile= false;
 
     $http.get(NODOMAIN + 'storyDetails/' + $scope.paramStoryId)
     .success(function (response) {
@@ -26,7 +26,7 @@ album.controller('albumController', function ($scope, $http, $timeout, $location
             
             if($scope.storyDet.story_cover_photo_path){
                 var actualImage = new Image();
-                $scope.storyDet.coverPhtblur = $scope.storyDet.story_cover_photo_path.replace($scope.pattern, '');
+                $scope.storyDet.coverPhtblur = $scope.storyDet.story_cover_photo_path.replace('/upload/','/upload/e_blur:500,w_320/');
                 actualImage.src = $scope.storyDet.coverPhtblur.replace(/"/g, "").replace(/url\(|\)$/ig, "");
                 actualImage.onload = function () {
                     var orImg = $('#coverPhoto').css('backgroundImage').replace('url(', '').replace(')', '');
