@@ -20,25 +20,50 @@
     <body ng-app="createAlbum">
         <div class="container  ADDSTORY"  ng-controller="albumController" ng-cloak id='contHt'>
             
-            <!-- <form novalidate enctype="multipart/form-data">
-                <input type="file" id="coverUpload" file-model="myFile" multiple>
-                <label for="coverUpload"></label>
-                <button ng-click="uploadFile()">SUBMIT</button>
-            </form> -->
 
-            
-            
+             
+             <form id="storyCover" enctype="multipart/form-data" action="" method="post" name="form1">
+                 <input type="file" onchange="addCoverImg(this);" accept="image/*" id="forCoverImage" name="userPhoto" class="" multiple="">
+                
+            </form>
 
-            <form id="frmUploader" enctype="multipart/form-data" action="/photosUpload/123456/1" method="post">
-                <input type="file" name="imgUploader" multiple />
-                <input type="submit" name="submit" id="btnSubmit" value="Upload" />
-        </form>
-            
-            
-            
-            
-            
-            
         </div>
+        
+        
+        
+        <script>
+        
+        
+                        
+            function addCoverImg(input){
+                var FD = new FormData(document.getElementById("storyCover"));
+                $.ajax({
+                    url: NODOMAIN + 'timelinePhotoUpload/123456/1',
+                    type: 'POST',
+                    data: FD,
+                    enctype: 'multipart/form-data',
+                    async: true,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        console.log(response)
+                    }
+                    , error: function (err) {
+                        common.msg(0, err);
+                    }
+
+                    });
+
+
+                }
+                        
+        </script>
+        
+        
+        
+        
+        
+        
     </body>
 </html>
