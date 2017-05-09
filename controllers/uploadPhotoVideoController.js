@@ -57,7 +57,6 @@ var photosUpload = function (req, res, next) {
 
 
 timelinePhotoUpload = function (req, res, next) {
-    console.log(req)
     var myFile = "";
     var FilesNames = [];
     var results = {};
@@ -70,10 +69,13 @@ timelinePhotoUpload = function (req, res, next) {
 
     var activeFlag = 1;
     var timelineids = 1;
-    var urlsString = 'localhost'
+  var urlsString = req.hostname;
+        if (req.hostname === 'localhost') {
+            urlsString = urlsString + '/album';
+        }
+        urlsString += '/uploads';
 
-    urlsString = urlsString + ":" + "8000/";
-    var folderName = (req.body.folderName) ? req.body.folderName : 'common';
+    var folderName = '';
     if (!fs.existsSync("uploads/" + folderName)) {
         fs.mkdirSync("uploads/" + folderName, 0777, function (err, callback) {
             if (err) {
@@ -82,18 +84,82 @@ timelinePhotoUpload = function (req, res, next) {
         });
     }
 
+
+        var d   = new Date();
+        var yy  = d.getFullYear();
+        var mm  = d.getMonth()+1;
+        var dd  = d.getDate();
+        var h   = d.getHours();
+        var m   = d.getMinutes();
+        var uploadedFolder = "";
+
+         uploadedFolder = folderName;
+
+        if (!fs.existsSync("uploads/" + uploadedFolder)) {
+            fs.mkdirSync(uploadedFolder, 0777, function (err,callback) {
+                if (err) {
+                    callback('folder created');
+                }
+            });
+        }
+
+        uploadedFolder  += "/"+yy;
+        if (!fs.existsSync("uploads/" +uploadedFolder)) {
+            fs.mkdirSync("uploads/" +uploadedFolder, 0777, function (err,callback) {
+                if (err) {
+                    callback('folder created');
+                }
+            });
+        }
+        uploadedFolder  += "/"+mm;
+        if (!fs.existsSync("uploads/" + uploadedFolder)) {
+            fs.mkdirSync("uploads/" +uploadedFolder, 0777, function (err,callback) {
+                if (err) {
+                    callback('folder created');
+                }
+            });
+        }
+        uploadedFolder  += "/"+dd;
+        if (!fs.existsSync("uploads/"  +uploadedFolder)) {
+            fs.mkdirSync("uploads/"  +uploadedFolder, 0777, function (err,callback) {
+                if (err) {
+                    callback('folder created');
+                }
+            });
+        }
+        uploadedFolder  += "/"+h;
+        if (!fs.existsSync("uploads/"  +uploadedFolder)) {
+            fs.mkdirSync("uploads/"  +uploadedFolder, 0777, function (err,callback) {
+                if (err) {
+                    callback('folder created');
+                }
+            });
+        }
+        // var randomFilePath =""+ uuid.v1();
+        // var randomFolderName = randomFilePath.split("-").pop();
+        // uploadedFolder  += "/"+randomFolderName;
+        // if (!fs.existsSync("uploads/"  +uploadedFolder)) {
+        //     fs.mkdirSync("uploads/"  +uploadedFolder, 0777, function (err,callback) {
+        //         if (err) {
+        //             callback('folder created');
+        //         }
+        //     });
+        // }
+
+
+
     var storage = multer.diskStorage({
         destination: function (req, file, callback) {
-            console.log(file)
+            
             callback(null, './uploads');
         },
         filename: function (req, file, callback) {
-            console.log(file)
+        
             myFile = "" + uuid.v1() + path.extname(file.originalname);
             var fileDetails = {};
             FilesNames.push(urlsString + folderName + "/" + myFile);
 
-            var photoPath = folderName + "/" + myFile;
+            var photoPath =urlsString+ folderName + "/" + myFile;
             if (timelineids)
             {
                 var tids = [1];
