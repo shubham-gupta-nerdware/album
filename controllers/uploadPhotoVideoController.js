@@ -2,79 +2,27 @@ var fs = require('fs');
 var uuid = require('uuid');
 var multer = require('multer');
 var path = require('path');
+var sharp = require('sharp');
+const getColors = require('get-image-colors')
+var rgb2hex = require('rgb2hex');
+const Filter = require('node-image-filter');
 
-var randomFilePath = '';
-var folder = '';
-var Storage = multer.diskStorage({
-    destination: function (req, file, callback) {
-
-        console.log("file");
-        console.log(file);
-        callback(null, "./uploads");
-
-
-    },
-    filename: function (req, file, callback) {
-        console.log("file0");
-        console.log(file);
-        callback(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);
-    }
-});
-
-
-
-var upload = multer({ storage: Storage }).array("imgUploader", 3); //Field name and max count
-
-
-var photosUpload = function (req, res, next) {
-    var result = {};
-    var retArr = {};
-    var results = [];
-    var error = {};
-
-
-    upload(req, res, function (err) {
-        if (err) {
-            result = results;
-            retArr.results = result;
-            error.errorCode = 1;
-            error.errorMsg = "Error while uploading";
-            retArr.error = error;
-            res.json(retArr);
-            return 1;
-        }
-        result = results;
-        retArr.results = result;
-        error.errorCode = 0;
-        error.errorMsg = "File uploaded sussesfully";
-        retArr.error = error;
-        res.json(retArr);
-        return 1;
-    });
-
-
-};
-
-
-timelinePhotoUpload = function (req, res, next) {
+var timelinePhotoUpload = function (req, res, next) {
     var myFile = "";
     var FilesNames = [];
     var results = {};
     var photoArray = [];
     var allFiles = {};
-
-
     var pType = 1;
-
-
     var activeFlag = 1;
     var timelineids = 1;
   var urlsString = req.hostname;
-        if (req.hostname === 'localhost') {
+        if (req.hostname === 'localhost' || req.hostname === '192.168.1.47') {
             urlsString = urlsString + '/album';
         }
         urlsString += '/uploads';
-
+        
+  
     var folderName = '';
     if (!fs.existsSync("uploads/" + folderName)) {
         fs.mkdirSync("uploads/" + folderName, 0777, function (err, callback) {
@@ -83,8 +31,6 @@ timelinePhotoUpload = function (req, res, next) {
             }
         });
     }
-
-
         var d   = new Date();
         var yy  = d.getFullYear();
         var mm  = d.getMonth()+1;
@@ -92,9 +38,7 @@ timelinePhotoUpload = function (req, res, next) {
         var h   = d.getHours();
         var m   = d.getMinutes();
         var uploadedFolder = "";
-
          uploadedFolder = folderName;
-
         if (!fs.existsSync("uploads/" + uploadedFolder)) {
             fs.mkdirSync(uploadedFolder, 0777, function (err,callback) {
                 if (err) {
@@ -102,7 +46,6 @@ timelinePhotoUpload = function (req, res, next) {
                 }
             });
         }
-
         uploadedFolder  += "/"+yy;
         if (!fs.existsSync("uploads/" +uploadedFolder)) {
             fs.mkdirSync("uploads/" +uploadedFolder, 0777, function (err,callback) {
@@ -145,9 +88,6 @@ timelinePhotoUpload = function (req, res, next) {
         //         }
         //     });
         // }
-
-
-
     var storage = multer.diskStorage({
         destination: function (req, file, callback) {
             
@@ -158,18 +98,15 @@ timelinePhotoUpload = function (req, res, next) {
             myFile = "" + uuid.v1() + path.extname(file.originalname);
             var fileDetails = {};
             FilesNames.push(urlsString + folderName + "/" + myFile);
-
             var photoPath =urlsString+ folderName + "/" + myFile;
             if (timelineids)
             {
                 var tids = [1];
                 tids.forEach(function (vk, i) {
-
                     var dTime = new Date().getTime();
                     var photoId;
                     var rNum = getRandomInt(1, 9);
                     photoId = '' + rNum + '' + dTime;
-
                     fileDetails.photId = photoId;
                     fileDetails.filePath = (urlsString + folderName + "/" + myFile);
                     photoArray.push(fileDetails);
@@ -179,16 +116,68 @@ timelinePhotoUpload = function (req, res, next) {
         }
     });
     var upload = multer({storage: storage}).array('userPhoto', 100);
-
     upload(req, res, function (err) {
         if (err) {
             return res.end("Error uploading file.");
         }
         allFiles.filePaths = FilesNames;
+        
+        FilesNames.forEach(function(vl,i){
+            var tvl=vl.split('album/uploads/');
+            var image = sharp('uploads/'+tvl[1]);
+            var hexcode = [];
+            
+ 
+            getColors('uploads/'+tvl[1]).then(colors => {
+                colors.forEach( function(vz, k) {
+                    var hexdata = (rgb2hex('rgb('+vz._rgb[0]+','+vz._rgb[1]+','+vz._rgb[2]+')'));
+                    hexcode.push(hexdata.hex);
+                });
+            }).then(function(){
+                console.log(hexcode);
+            });
+            
+            
+            var sizes = [
+                {path: 'uploads/versions/240/',w: 240},
+                {path: 'uploads/versions/360/',w: 360},
+                {path: 'uploads/versions/480/',w: 480},
+                {path: 'uploads/versions/720/',w: 720},
+                {path: 'uploads/versions/1080/',w: 1080},
+                {path: 'uploads/versions/1280/',w: 1280},
+                {path: 'uploads/versions/1440/',w: 1440},
+                {path: 'uploads/versions/1920/',w: 1920}
+            ];
+           
+            sizes.forEach(function(size){
+                image
+                .metadata()
+                .then(function(metadata) {
+                    if(metadata.width>1920) {
+                        var nw = 1920;
+                    }
+                    else
+                        var nw = metadata.width;
+                    return image
+                    .resize( size.w)
+                    .toFile(size.path+tvl[1], function(err, info) {
+                        console.log("err");
+                        console.log(err);
+                        console.log("info");
+                        console.log(info);
+                    });
+
+                }).catch(function (msg) {
+                    console.log(msg);
+                    return 1;
+                });
+            });
+        });
         allFiles.details = photoArray;
-        res.send(allFiles);
     });
+    
 };
+
 
 
 function getRandomInt(min, max) {
@@ -196,5 +185,4 @@ function getRandomInt(min, max) {
 }
 
 module.exports = {
-    photosUpload: photosUpload,
     timelinePhotoUpload: timelinePhotoUpload};
