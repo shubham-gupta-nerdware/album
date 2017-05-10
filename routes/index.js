@@ -9,7 +9,7 @@ router.get('/storyDetails/:storyId', storyControllerObj.getStoryDetails);//versi
 
 
 var uploadPhotoVideoControllerObj =  require('../controllers/uploadPhotoVideoController.js');
-router.post('/timelinePhotoUpload/:storyId/:ptype', uploadPhotoVideoControllerObj.timelinePhotoUpload);//version
+router.post('/photosUpload/:id/:ptype', uploadPhotoVideoControllerObj.photosUpload);//version
 
 
 module.exports = router;

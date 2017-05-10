@@ -1,13 +1,17 @@
-var fs = require('fs');
-var uuid = require('uuid');
-var multer = require('multer');
-var path = require('path');
-var sharp = require('sharp');
-const getColors = require('get-image-colors')
-var rgb2hex = require('rgb2hex');
+const fs = require('fs');
+const uuid = require('uuid');
+const multer = require('multer');
+const path = require('path');
+const sharp = require('sharp');
+const getColors = require('get-image-colors');
+const rgb2hex = require('rgb2hex');
 const Filter = require('node-image-filter');
 
-var timelinePhotoUpload = function (req, res, next) {
+
+//media type - img , video --server side
+//photo type - user , cover , logo , normal img
+
+var photosUpload = function (req, res, next) {
     var myFile = "";
     var FilesNames = [];
     var results = {};
@@ -16,89 +20,25 @@ var timelinePhotoUpload = function (req, res, next) {
     var pType = 1;
     var activeFlag = 1;
     var timelineids = 1;
+    
+    
+    
   var urlsString = req.hostname;
-        if (req.hostname === 'localhost' || req.hostname === '192.168.1.47') {
-            urlsString = urlsString + '/album';
-        }
-        urlsString += '/uploads';
-        
-  
-    var folderName = '';
-    if (!fs.existsSync("uploads/" + folderName)) {
-        fs.mkdirSync("uploads/" + folderName, 0777, function (err, callback) {
-            if (err) {
-                callback('folder created');
-            }
-        });
+    if (req.hostname === 'localhost' || req.hostname.indexOf('192.168.') !== -1) {
+        urlsString = urlsString + '/album';
     }
-        var d   = new Date();
-        var yy  = d.getFullYear();
-        var mm  = d.getMonth()+1;
-        var dd  = d.getDate();
-        var h   = d.getHours();
-        var m   = d.getMinutes();
-        var uploadedFolder = "";
-         uploadedFolder = folderName;
-        if (!fs.existsSync("uploads/" + uploadedFolder)) {
-            fs.mkdirSync(uploadedFolder, 0777, function (err,callback) {
-                if (err) {
-                    callback('folder created');
-                }
-            });
-        }
-        uploadedFolder  += "/"+yy;
-        if (!fs.existsSync("uploads/" +uploadedFolder)) {
-            fs.mkdirSync("uploads/" +uploadedFolder, 0777, function (err,callback) {
-                if (err) {
-                    callback('folder created');
-                }
-            });
-        }
-        uploadedFolder  += "/"+mm;
-        if (!fs.existsSync("uploads/" + uploadedFolder)) {
-            fs.mkdirSync("uploads/" +uploadedFolder, 0777, function (err,callback) {
-                if (err) {
-                    callback('folder created');
-                }
-            });
-        }
-        uploadedFolder  += "/"+dd;
-        if (!fs.existsSync("uploads/"  +uploadedFolder)) {
-            fs.mkdirSync("uploads/"  +uploadedFolder, 0777, function (err,callback) {
-                if (err) {
-                    callback('folder created');
-                }
-            });
-        }
-        uploadedFolder  += "/"+h;
-        if (!fs.existsSync("uploads/"  +uploadedFolder)) {
-            fs.mkdirSync("uploads/"  +uploadedFolder, 0777, function (err,callback) {
-                if (err) {
-                    callback('folder created');
-                }
-            });
-        }
-        // var randomFilePath =""+ uuid.v1();
-        // var randomFolderName = randomFilePath.split("-").pop();
-        // uploadedFolder  += "/"+randomFolderName;
-        // if (!fs.existsSync("uploads/"  +uploadedFolder)) {
-        //     fs.mkdirSync("uploads/"  +uploadedFolder, 0777, function (err,callback) {
-        //         if (err) {
-        //             callback('folder created');
-        //         }
-        //     });
-        // }
+    urlsString += '/uploads';
+        
     var storage = multer.diskStorage({
         destination: function (req, file, callback) {
-            
             callback(null, './uploads');
         },
-        filename: function (req, file, callback) {
         
+        filename: function (req, file, callback) {
             myFile = "" + uuid.v1() + path.extname(file.originalname);
             var fileDetails = {};
-            FilesNames.push(urlsString + folderName + "/" + myFile);
-            var photoPath =urlsString+ folderName + "/" + myFile;
+            FilesNames.push(urlsString + "/" + myFile);
+            var photoPath =urlsString+ + "/" + myFile;
             if (timelineids)
             {
                 var tids = [1];
@@ -108,7 +48,7 @@ var timelinePhotoUpload = function (req, res, next) {
                     var rNum = getRandomInt(1, 9);
                     photoId = '' + rNum + '' + dTime;
                     fileDetails.photId = photoId;
-                    fileDetails.filePath = (urlsString + folderName + "/" + myFile);
+                    fileDetails.filePath = (urlsString + "/" + myFile);
                     photoArray.push(fileDetails);
                     callback(null, myFile);
                 });
@@ -124,6 +64,8 @@ var timelinePhotoUpload = function (req, res, next) {
         
         FilesNames.forEach(function(vl,i){
             var tvl=vl.split('album/uploads/');
+            
+            console.log(vl)
             var image = sharp('uploads/'+tvl[1]);
             var hexcode = [];
             
@@ -185,4 +127,4 @@ function getRandomInt(min, max) {
 }
 
 module.exports = {
-    timelinePhotoUpload: timelinePhotoUpload};
+    photosUpload: photosUpload};
