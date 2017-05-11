@@ -8,6 +8,8 @@ var addStory = function(req, res, next){
   
 
 
+
+
 };
 
 var getStoryData = function(req, res, next ){
