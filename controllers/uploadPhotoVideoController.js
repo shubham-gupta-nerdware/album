@@ -189,7 +189,7 @@ var getUploadData = function(req, res, vl) {
                 }
 
                 fileDetails.filePath = "uploads/"+vl.name;
-                fileDetails.photId = vl.id;
+                fileDetails.photo_id = vl.id;
                 fileDetails.actualPath = "uploads/"+vl.name;
                 fileDetails.photo_type = 8;
                 fileDetails.hexCode = '';
@@ -203,7 +203,6 @@ var getUploadData = function(req, res, vl) {
                 
                     allFiles.filePaths = fNames;
                     allFiles.details =  pArray.reverse();
-                    // return allFiles;
                     resolve(allFiles);
                 
                 tot++;
