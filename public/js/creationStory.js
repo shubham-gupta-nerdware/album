@@ -708,6 +708,20 @@ function deleteItem(){
 
 function showSavebox(){
     alert('showSavebox');
+    
+//    var data = 
+//     $.ajax({
+//            url: NODOMAIN + 'addStory',
+//            type: 'POST',
+//            data: ,
+//            async: true,
+//            cache: false,
+//            contentType: false,
+//            processData: false,
+//            success: function (response) {
+//                
+//            }
+//        });
 }
 
 function changeCover(){
@@ -874,6 +888,7 @@ function submitJson(t){
     var svData = [];
     var groupLen = $('.group').length;
     var storyObj = {};
+    storyObj.storyId = 14946669326111;
     storyObj.story_heading = $('#storyMtitle').val();
     storyObj.story_heading_description = $('#storyStitle').val();
     storyObj.writen_by = 'XELPMOC';
@@ -1217,6 +1232,17 @@ function submitJson(t){
                        storyObj.story_title=story_title;
                        console.log('Done traverse');
                        console.log(storyObj);
+                       
+                       
+                       $.ajax({
+                           url:NODOMAIN+'addStory',
+                           data:storyObj,
+                           type:'POST',
+                           success:function(res){
+                               console.log(res)
+                           }
+                       })
+                       
                     });
                 }
             }

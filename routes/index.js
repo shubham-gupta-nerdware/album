@@ -10,6 +10,6 @@ router.get('/storyDetails/:storyId', storyControllerObj.getStoryDetails);//versi
 
 var uploadPhotoVideoControllerObj =  require('../controllers/uploadPhotoVideoController.js');
 router.post('/photosUpload/:id/:ptype', uploadPhotoVideoControllerObj.photosUpload);//version
-
+router.post('/addStory', storyControllerObj.addStory);//version
 
 module.exports = router;

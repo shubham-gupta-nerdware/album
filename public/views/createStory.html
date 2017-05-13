@@ -13,13 +13,13 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.6.8-fix/jquery.nicescroll.min.js"></script>
         <script type="text/javascript" src="../js/Common.js"></script>
         <script type="text/javascript" src="../js/constant.js"></script>
-        <script type="text/javascript" src="../js/creationApp.js"></script>
+        <script type="text/javascript" src="../js/app2.js"></script>
         <script type="text/javascript" src="../js/drag.js"></script>
         <script type="text/javascript" src="../js/creationStory.js"></script>
         <link rel="stylesheet" type="text/css" href="../css/album.css">
         <link rel="stylesheet" type="text/css" href="../css/albumV2.css">
     </head>
-    <body ng-app="createAlbum">
+    <body ng-app="album">
         <div class="container  ADDSTORY"  ng-controller="albumController" ng-cloak id='contHt'>
             <div class="coverOver">
                 <div id='cover' class="coverSection fLeft"  data-img="" style="">
@@ -28,8 +28,8 @@
                 </div>
                 <div class="neighData"  id='coverInfo'>
                     <div class="neighDataD transition2s">
-                        <input type="text" maxlength="30" class="storyTitle fLeft bgTRans  hide680" placeholder="Enter your story title here"   id='storyMtitle'>
-                        <input type="text"  maxlength="70" class="storyTxt fLeft bgTRans  hide680" placeholder="And write your sub title here" id='storyStitle'/>
+                        <input type="text" maxlength="30" class="storyTitle fLeft  hide680" placeholder="Enter your story title here" readonly ng-class="storyDet.story_heading ? 'bgTRans' : ''" value="{{storyDet.story_heading}}"  id='storyMtitle'>
+                        <input type="text"  maxlength="70" readonly class="storyTxt fLeft hide680" placeholder="And write your sub title here" ng-class="storyDet.story_heading_description ? 'bgTRans' : ''" readonly style="height: 70px;" value="{{storyDet.story_heading_description}}" id='storyStitle'/>
                     </div>
                 </div>
                 <div class="neighData bgF0F0F0" id='coverInfoCap'>
@@ -50,9 +50,33 @@
                 </div>
             </div>
             <div id="grid" class="">
+                <div class="group"  style="height: {{jx.height}}px;" ng-repeat="jx in returnArr" repeat-end="onEndReturnArr();"  data-index="{{$index}}">
+                    <div ng-repeat="it in jx.items" class="item {{it.id}}" data-id="{{it.id}}" data-height="{{it.dh}}" data-width="{{it.dw}}" data-facval="{{it.facval}}" data-factor="{{it.factor}}" data-img="{{it.imagePath}}"  ng-if="(it.type == 'txt' || (it.imagePath && it.dw && it.dh))">
+                        <div class="neighData" ng-if="it.type == 'txt' && txt.title_id==it.id" ng-repeat="txt in titles" >
+                            <div class="neighDataD forData forInps">
+                                <div maxlength="40" class="storyTitle fLeft " style="" ng-bind-html="txt.title_text | unsafe" ng-class="txt.text_color == '#ffffff' ? 'whitePlaceholder' : ''" style="color: {{txt.text_color}}; text-align:{{ txt.text_align}}"></div>
+                                <div class="storyTxt fLeft editable noPlacHolder " contenteditable="false" ng-bind-html="txt.description | unsafe" ng-class="txt.text_color == '#ffffff' ? 'whitePlaceholder' : ''" style="color: {{txt.text_color}}; text-align:{{ txt.text_align}}"></div>
+                            </div>
+                        </div>
+                        <video id="videoTag-{{it.id}}" class="video" video-events muted loop playsinline style="width:100%;height:100%" ng-if="it.type == 'video'"></video>
+                        <div class="videoCont" ng-if="it.type == 'video'">
+                            <div class="muteIcon muted" ng-click="muteVideo('videoTag-'+it.id,$event)"></div>
+                            <div class="pauseIcon" ng-click="pauseVideo('videoTag-'+it.id,$event)"></div>
+                            <div class="mobilePlay"></div>
+                        </div>
+                    </div>
+                </div>
                 <div class="drag-line"></div>
             </div>
-            
+            <div class="userFooter fmOpenR">
+                <div class="gnrlCnt2 fLeft">
+                    <center>
+                        <div class="shrtFrm" data-uid='{{storyDet.writen_by_id}}'  style="background-image: url(../img/galaShow.jpg);background-repeat:  no-repeat;background-size: cover;background-position: center;">{{storyDet.writen_by_img ? '' : storyDet.writen_by_name_initials}}</div>
+                    </center>
+                </div>
+                <div class="fTxt fLeft txtCenter">Made by</div>
+                <div class="fTxt1 fLeft txtCenter">{{storyDet.writen_by == 'Homehapp' ? 'XELPMOC' : storyDet.writen_by}}</div>
+            </div>
             <div class="addCont fRight noselect" id="addCont" style="">
                 <div class="stpanelHead">
                     <div id="panelBack" class="hback transition200 dn" onclick="resetRight()"></div>
@@ -101,7 +125,7 @@
                     </div>
                     <div id="coverMkBtn" class="storyBtns transition200 addCoverBtn fLeft dn"  onclick="makeCoverImg()">Use as cover photo</div>
                     <div id="deleteBtn" class="storyBtns transition200 delSelBtn fLeft dn"     onclick="deleteItem()">Delete Selected</div>
-                    <div class="saveTxt " onclick="saveStory()" id="saveStory">SAVE STORY</div>
+                    <div class="saveTxt " onclick="submitJson(1)" id="saveStory">SAVE STORY</div>
                 </div>
             </div>
         </div>
