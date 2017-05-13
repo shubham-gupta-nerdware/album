@@ -188,17 +188,25 @@ var getUploadData = function(req, res, vl) {
                     var vwt = metadata.ImageWidth;
                 }
 
-                fileDetails.filePath = "uploads/"+vl.name;
+//                fileDetails.photo_path = "uploads/"+vl.name;
+//                fileDetails.photo_id = vl.id;
+//                fileDetails.photo_path = "uploads/"+vl.name;
+//                fileDetails.photo_type = 8;
+//                fileDetails.hexCode = '';
+//                fileDetails.cloudFilePath = '';
+//                fileDetails.imgWidth = vwt;
+//                fileDetails.imgHeight = vht;
+//                fileDetails.rotation = '';
+//                fileDetails.poster = '';
+//                fileDetails.oname = vl.oname;
+//                
+                fileDetails.photo_path = "uploads/"+vl.name;
                 fileDetails.photo_id = vl.id;
-                fileDetails.actualPath = "uploads/"+vl.name;
+
                 fileDetails.photo_type = 8;
-                fileDetails.hexCode = '';
-                fileDetails.cloudFilePath = '';
                 fileDetails.imgWidth = vwt;
                 fileDetails.imgHeight = vht;
-                fileDetails.rotation = '';
-                fileDetails.poster = '';
-                fileDetails.oname = vl.oname;
+                
                 pArray.push(fileDetails);
                 
                     allFiles.filePaths = fNames;
@@ -228,9 +236,6 @@ var getUploadData = function(req, res, vl) {
                             fileDetails.photo_id = vl.id;
 
                             fileDetails.photo_type = vl.ptype;
-                            fileDetails.color_code = '';
-                            fileDetails.color_code_first = '';
-
                             fileDetails.imgWidth = info.width;
                             fileDetails.imgHeight = info.height;
                             pArray.push(fileDetails);

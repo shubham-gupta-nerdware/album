@@ -46,7 +46,7 @@ var getStoryData = function(req, res, next ){
 
 var getStoryDetails = function(req, res, next ){
       
-     console.log(req.hostname);
+    console.log(req.hostname);
     var sid = req.params.storyId;
     
    // MongoClient.connect(url, function(err, db) {

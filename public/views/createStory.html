@@ -14,46 +14,98 @@
         <script type="text/javascript" src="../js/Common.js"></script>
         <script type="text/javascript" src="../js/constant.js"></script>
         <script type="text/javascript" src="../js/creationApp.js"></script>
+        <script type="text/javascript" src="../js/drag.js"></script>
         <script type="text/javascript" src="../js/creationStory.js"></script>
         <link rel="stylesheet" type="text/css" href="../css/album.css">
+        <link rel="stylesheet" type="text/css" href="../css/albumV2.css">
     </head>
     <body ng-app="createAlbum">
         <div class="container  ADDSTORY"  ng-controller="albumController" ng-cloak id='contHt'>
-             
-             <form id="storyCover" enctype="multipart/form-data" action="" method="post" name="form1">
-                 <input type="file" onchange="addCoverImg(this);" accept="image/*" id="forCoverImage" name="userPhoto" class="" multiple="">
-                
-            </form>
+            <div class="coverOver">
+                <div id='cover' class="coverSection fLeft"  data-img="" style="">
+                    <div class="patternDiv"   id='coverPattern'></div>
+                    
+                </div>
+                <div class="neighData"  id='coverInfo'>
+                    <div class="neighDataD transition2s">
+                        <input type="text" maxlength="30" class="storyTitle fLeft bgTRans  hide680" placeholder="Enter your story title here"   id='storyMtitle'>
+                        <input type="text"  maxlength="70" class="storyTxt fLeft bgTRans  hide680" placeholder="And write your sub title here" id='storyStitle'/>
+                    </div>
+                </div>
+                <div class="neighData bgF0F0F0" id='coverInfoCap'>
+                    <form id="storyCover" enctype="multipart/form-data" action="" method="post" name="form1">
+                        <input type="file" onchange="addCoverImg(this);" accept="image/*" id="forCoverImage" name="userPhoto" class="dn">
+                        <label for="forCoverImage" class="coverAddBtn transition300">
+                            <div class="forCntr">Add a cover image</div>
+                        </label>
+                    </form>
+                    <div class="storyLoader dn" id="storyCoverLoader">
+                        <div class="loaderTxt">
+                            <div class="loaderTxtDiv">
+                                <div class='lTxt'>UPLOADING COVER PHOTO</div>
+                                <div class="loadBg"><div class='loaderLine'></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="grid" class="">
+                <div class="drag-line"></div>
+            </div>
+            
+            <div class="addCont fRight noselect" id="addCont" style="">
+                <div class="stpanelHead">
+                    <div id="panelBack" class="hback transition200 dn" onclick="resetRight()"></div>
+                    <div class="hcancel transition200  disabled3" onclick="showSavebox()" id='panelCross'></div>
+                    <div class="col100 font15 addStryTitle1 mBot5">Add to your story</div>
+                    <div class="col100 font13 addStryTitle2">A Picture is worth a thousand words.</div>
+                </div>
+                <div class="actionWrapper fLeft">
+                    <div class="col100 slSelect">
+                        <form id="storyPhoto" enctype="multipart/form-data" action=""  method="post" name="form2" class=" ">
+                            <input type="file" onchange="generateStory(this);" name="userPhoto" multiple accept="video/3gp, video/3gpp, video/mp4, video/x-m4v, video/*, image/*" id="proImg" class="dn">
+                            <label for="proImg" class="storyBtns transition200 addImgBtn ">Image & Video</label>
+                        </form>
+                    </div>
+                    <div id='addTextBtn' class="addTxtBtn storyBtns  transition200 slSelect" onclick="addText()">Text</div>
+                    <div id='changeCoverBtn' class="storyBtns  transition200 addCoverBtn  slSelect" onclick="changeCover()">Change Cover Photo</div>
 
+                    <div class="txtColors fLeft dn"  id="forBgCols">
+                        <div class="colComm fLeft">
+                            <div class="colTitle fLeft">Select Background Colour</div>
+                            <div class="colCont fLeft" id="addBGcolor"></div>
+                        </div>
+                    </div>
+                    <div class="txtColors fLeft dn" id="forResize">
+                        <div class="colComm fLeft">
+                            <div class="colTitle fLeft">Shape</div>
+                            <div class="colCont fLeft">
+                                <div class="shComm fLeft transition100 shActive" onclick="refactor('auto',0,this);">Auto</div>
+                                <div class="shComm fLeft transition100 31" onclick="refactor(3, 1,this);">3:1</div>
+                                <div class="shComm fLeft transition100 32" onclick="refactor(3, 2,this);">3:2</div>
+                                <div class="shComm fLeft transition100 11" onclick="refactor(1, 1,this);">1:1</div>
+                                <div class="shComm fLeft transition100 23" onclick="refactor(2, 3,this);">2:3</div>
+                                <div class="shComm fLeft transition100 13" onclick="refactor(1, 3,this);">1:3</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="txtColors fLeft dn" id="forTextAlign">
+                        <div class="colComm fLeft">
+                            <div class="colTitle fLeft">Align Text</div>
+                            <div class="colCont fLeft">
+                                <div data-align="left" class="alComm fLeft" onclick="alignText(this)"><div class="alignbg1"></div></div>
+                                <div data-align="center" class="alComm fLeft" onclick="alignText(this)"><div class="alignbg2"></div></div>
+                                <div data-align="right" class="alComm fLeft" onclick="alignText(this)"><div class="alignbg3"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="coverMkBtn" class="storyBtns transition200 addCoverBtn fLeft dn"  onclick="makeCoverImg()">Use as cover photo</div>
+                    <div id="deleteBtn" class="storyBtns transition200 delSelBtn fLeft dn"     onclick="deleteItem()">Delete Selected</div>
+                    <div class="saveTxt " onclick="saveStory()" id="saveStory">SAVE STORY</div>
+                </div>
+            </div>
         </div>
-        <script>
-            function addCoverImg(input){
-                var FD = new FormData(document.getElementById("storyCover"));
-                $.ajax({
-                    url: NODOMAIN + 'photosUpload/123456/1',
-                    type: 'POST',
-                    data: FD,
-                    enctype: 'multipart/form-data',
-                    async: true,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    success: function (response) {
-                        console.log(response)
-                    }
-                    , error: function (err) {
-                        common.msg(0, err);
-                    }
-
-                    });
-                }
-                        
-        </script>
-        
-        
-        
-        
-        
-        
+        <div class="uDiv dn"></div>
+        <div class="lDiv dn"></div>
     </body>
 </html>

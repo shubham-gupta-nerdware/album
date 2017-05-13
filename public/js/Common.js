@@ -429,36 +429,27 @@ function Common() {
     };
 
     this.hManage = function()
-    {   brManage();
+    {   
+        _this.brManage();
         $('.editable1').click(function(e){
-            $(this).parent().parent().parent().draggable(option);
-            $(this).parent().parent().parent().draggable("destroy");
-            var tid=$(this).attr('id');
-            var el = document.getElementById(tid);
-            $('#coverMkBtn,#storyPhoto,#addTextBtn,#storyVideo,#changeCoverBtn,#forResize,#homeTagDiv,#neighTagDiv,#aHome,#aNeighbour').addClass('dn');
-            $('#forBgCols,#forTextCols,#forTextAlign, .hback').removeClass('dn');
+            //$(this).parent().parent().parent().draggable(option);
+            //$(this).parent().parent().parent().draggable("destroy");
         });
-
 
         $('.editable').focusout(function(){
             _this.removeStyleChilds($(this));
 
             var id =$('.activate').attr('data-id');
             $('.activateTxt').removeClass('activateTxt');
-            savetitle(id, 1);
-            $('.item').draggable(option);
+            //$('.item').draggable(option);
         });
 
+        
 
-
-        $('.txtEditable').focusout(function(){
-            _this.removeStyleChilds($(this));
-        });
-
-        $('.editable,.txtEditable').unbind('paste keyup cut');
+        $('.editable').unbind('paste keyup cut');
 
         $('.editable,.txtEditable').bind('paste',function(e){
-          var text = '';
+            var text = '';
             var that = $(this);
 
             if (e.clipboardData)
@@ -486,7 +477,6 @@ function Common() {
         });
 
 
-
         $('.editable').bind('cut',function(e){
             _this.managePlaceHolder($(this));
         });
@@ -499,72 +489,19 @@ function Common() {
 
     this.managePlaceHolder = function(obj){
         var html=$(obj).html();
-        if(html === '<br>')
-        {
+        if(html === '<br>'){
             $(obj).html('');
             $(obj).addClass('noPlacHolder');
         }
-        else if(html!=="")
-        {
+        else if(html!==""){
             $(obj).addClass('noPlacHolder');
         }
         else
             $(obj).removeClass('noPlacHolder');
-
     };
 
 
 
-    this.computeHeight = function(v){};
-
-    this.pasteHtmlAtCaret = function(html) {
-    var sel, range;
-    if (window.getSelection) {
-        // IE9 and non-IE
-        sel = window.getSelection();
-        if (sel.getRangeAt && sel.rangeCount)
-        {
-            range = sel.getRangeAt(0);
-            range.deleteContents();
-            var el = document.createElement("div");
-            el.innerHTML = html;
-            var frag = document.createDocumentFragment(), node, lastNode;
-            while ( (node = el.firstChild) ) {
-                lastNode = frag.appendChild(node);
-            }
-            range.insertNode(frag);
-            if (lastNode) {
-                range = range.cloneRange();
-                range.setStartAfter(lastNode);
-                range.collapse(true);
-                sel.removeAllRanges();
-                sel.addRange(range);
-            }
-        }
-    }
-    else if (document.selection && document.selection.type != "Control") {
-       // IE < 9
-        document.selection.createRange().pasteHTML(html);
-    }
-};
-
-
-
-    this.findChilds = function (obj){
-
-//        $(obj).children().each(function(i){
-//            var st=$(this);
-//            var st1=$(this).attr('style');
-//            $(this).removeAttr('style');
-//            var ln =$(this).children().length;
-//            if(ln>0)
-//                _this.findChilds($(this));
-//
-//        });
-//
-//        _this.strip(obj);
-
-    };
 
 
 
@@ -589,15 +526,13 @@ function Common() {
         }
     };
 
-    this.dbDate = function(dt)
-    {
+    this.dbDate = function(dt){
         dt = new Date(dt);
         var dbFomrdate = (dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate());
         return dbFomrdate;
     };
 
-    this.viewDate = function(dt)
-    {
+    this.viewDate = function(dt){
         //dt format - yyyy-mm-dd
         //dt = new Date(dt);
         dt = (new Date(dt.replace(/-/g, "/")));
@@ -625,8 +560,7 @@ function Common() {
     };
 
 
-    this.hours_am_pm = function(hours,min)
-    {
+    this.hours_am_pm = function(hours,min){
         var h='12';
         var m='00';
         var l=' PM';
@@ -715,8 +649,7 @@ function Common() {
 
 
 
-    this.createChannel = function (obj)
-    {
+    this.createChannel = function (obj){
         var fingerprint = new Fingerprint2();
         var request = window.superagent;
         var uid = _this.readFromStorage('userIID');
@@ -807,20 +740,43 @@ function Common() {
     };
 
 
-    this.getid=function(){
-        return _this.readFromStorage("userIID")+_this.generatesalt();
-    };
-
-    this.gid=function(){
-        return _this.readFromStorage("userIID");
-    };
-
-
     this.findElementInArray = function(searchElement, arrayName){
         if(arrayName && typeof(arrayName) === 'object')
             return arrayName.customIndexOf(searchElement);
         else
             return -1;
+    };
+    
+    this.brManage= function(){
+        $('div[contenteditable="true"]').keypress(function(event) {
+            if (event.which != 13)
+                return true;
+            var docFragment = document.createDocumentFragment();
+            //add a new line
+            var newEle = document.createTextNode('\n');
+            docFragment.appendChild(newEle);
+
+            //add the br, or p, or something else
+            newEle = document.createElement('br');
+            docFragment.appendChild(newEle);
+
+            //make the br replace selection
+            var range = window.getSelection().getRangeAt(0);
+            range.deleteContents();
+            range.insertNode(docFragment);
+
+            //create a new range
+            range = document.createRange();
+            range.setStartAfter(newEle);
+            range.collapse(true);
+
+            //make the cursor there
+            var sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+
+            return false;
+        });
     };
 
 }
@@ -859,57 +815,7 @@ Array.prototype.customIndexOf = function (searchElement, fromIndex) {
 
     return val;
 };
-//
-//$(window).bind('storage', function (e) {
-//
-//    console.log(e.originalEvent.key, e.originalEvent.newValue);
-//    alert(page);
-//});
 
 
 
-function updateNotify(num){
-  $('.notify_count').html(num);
-}
-
-
-
-function brManage(){
-
-$('div[contenteditable="true"]').keypress(function(event) {
-
-	if (event.which != 13)
-		return true;
-
-	var docFragment = document.createDocumentFragment();
-
-	//add a new line
-	var newEle = document.createTextNode('\n');
-	docFragment.appendChild(newEle);
-
-	//add the br, or p, or something else
-	newEle = document.createElement('br');
-	docFragment.appendChild(newEle);
-
-	//make the br replace selection
-	var range = window.getSelection().getRangeAt(0);
-	range.deleteContents();
-	range.insertNode(docFragment);
-
-	//create a new range
-	range = document.createRange();
-	range.setStartAfter(newEle);
-	range.collapse(true);
-
-	//make the cursor there
-	var sel = window.getSelection();
-	sel.removeAllRanges();
-	sel.addRange(range);
-
-	return false;
-});
-
-
-
-}
 
